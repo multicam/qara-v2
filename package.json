@@ -14,7 +14,8 @@
     "test": "bun test",
     "baml:generate": "baml-cli generate",
     "baml:test": "baml-cli test",
-    "upgrade": "bun upgrade --latest --interactive"
+    "upgrade": "bun upgrade --latest --interactive",
+    "manual:research:test": "bun run src/cli/index.ts \"quick research BAML\" --verbose"
   },
   "devDependencies": {
     "@boundaryml/baml": "^0.214.0",

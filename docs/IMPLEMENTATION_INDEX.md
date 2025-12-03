@@ -59,13 +59,14 @@ MVP Scope (10 hours):
 | `CLI_INTEGRATION_GUIDE.md` | ~880 | External CLI integrations | **Phase 3** |
 | `QARA_VIEW_REFERENCE.md` | ~875 | Observability dashboard | **Phase 4** |
 | `FABRIC_SKILL_INTEGRATION.md` | ~450 | Fabric pattern integration | **Phase 5** |
+| `WRITING_CONTENT_SKILL_INTEGRATION.md` | ~500 | Writing & content generation | **Phase 5** |
 | `PROMPTING_SKILL_INTEGRATION.md` | ~400 | Prompt engineering skill | **Phase 5+** |
 | `HORMOZI_PITCH_SKILL_INTEGRATION.md` | ~500 | Sales pitch generation | **Phase 5+** |
 | `FRONTEND_DESIGN_SKILL_INTEGRATION.md` | ~550 | UI/UX design & code gen | **Phase 5+** |
 | `CODING_WORKFLOW_SKILL_INTEGRATION.md` | ~1200 | Full dev workflow (research→plan→implement→validate) | **Phase 5+** |
-| `SATELLITE_SKILLS.md` | ~90 | Future skill ideas | **Reference** |
+| `SATELLITE_SKILLS.md` | ~120 | Future skill ideas | **Reference** |
 
-**Total Documentation:** ~6,475 lines
+**Total Documentation:** ~7,000 lines
 
 ---
 
@@ -263,6 +264,7 @@ qara-v2-dashboard/              # Separate SvelteKit project
 
 **Documents:**
 - `FABRIC_SKILL_INTEGRATION.md` - Fabric patterns
+- `WRITING_CONTENT_SKILL_INTEGRATION.md` - Writing & content generation ✅
 - `PROMPTING_SKILL_INTEGRATION.md` - Prompt engineering
 - `HORMOZI_PITCH_SKILL_INTEGRATION.md` - Sales pitches
 - `FRONTEND_DESIGN_SKILL_INTEGRATION.md` - UI/UX design
@@ -275,6 +277,13 @@ baml_src/skills/
 │   ├── types.baml
 │   ├── patterns.baml
 │   └── dynamic.baml
+├── writing/                    ✅ COMPLETE
+│   ├── types.baml
+│   ├── blog.baml
+│   ├── email.baml
+│   ├── documentation.baml
+│   ├── edit.baml
+│   └── translate.baml
 ├── prompting/
 │   ├── types.baml
 │   └── functions.baml
@@ -294,6 +303,7 @@ baml_src/skills/
 
 src/skills/
 ├── fabric/orchestrator.ts
+├── writing/orchestrator.ts     (pending)
 ├── prompting/orchestrator.ts
 ├── hormozi/orchestrator.ts
 ├── frontend/orchestrator.ts
@@ -311,25 +321,38 @@ src/skills/
 - [ ] Create orchestrator with stitching
 - [ ] Test: `qara "summarize" < article.txt`
 
-#### 5b: Prompting Skill
+#### 5b: Writing/Content Skill ✅ BAML COMPLETE
+- [x] Create `baml_src/skills/writing/types.baml` (WritingTone, ContentLength, enums, output classes)
+- [x] Create `baml_src/skills/writing/blog.baml` (WriteBlog function)
+- [x] Create `baml_src/skills/writing/email.baml` (WriteEmail function)
+- [x] Create `baml_src/skills/writing/documentation.baml` (WriteDocumentation function)
+- [x] Create `baml_src/skills/writing/edit.baml` (EditContent function)
+- [x] Create `baml_src/skills/writing/translate.baml` (TranslateContent function)
+- [ ] Run `baml-cli generate` to generate TypeScript
+- [ ] Create `src/skills/writing/orchestrator.ts`
+- [ ] Add writing skills to registry
+- [ ] Test: `qara "write blog about TypeScript"`
+- [ ] Test: `qara "write email to client about delay"`
+
+#### 5c: Prompting Skill
 - [ ] Create BAML types (PromptQuality, EnhancedPrompt)
 - [ ] Create functions (Analyze, Enhance, Generate)
 - [ ] Create orchestrator with iterative refinement
 - [ ] Test: `qara "enhance prompt: write a blog"`
 
-#### 5c: Hormozi Pitch Skill
+#### 5d: Hormozi Pitch Skill
 - [ ] Create BAML types (ValueEquation, GrandSlamOffer)
 - [ ] Create functions (Value, Offer, Stack, LeadMagnet)
 - [ ] Create orchestrator
 - [ ] Test: `qara "hormozi pitch for SaaS product"`
 
-#### 5d: Frontend Design Skill
+#### 5e: Frontend Design Skill
 - [ ] Create BAML types (ComponentSpec, PageLayout, DesignSystem)
 - [ ] Create functions (Design, Generate, Copy)
 - [ ] Create orchestrator with framework support
 - [ ] Test: `qara "design react button component"`
 
-#### 5e: Coding Workflow Skill ⭐ (Critical)
+#### 5f: Coding Workflow Skill ⭐ (Critical)
 - [ ] Create `baml_src/skills/coding/types.baml` (all workflow types)
 - [ ] Create `baml_src/skills/coding/research.baml` (LocateCode, AnalyzeCode, FindPatterns)
 - [ ] Create `baml_src/skills/coding/planning.baml` (AnalyzeContext, DesignOptions, WriteImplementationPlan)
@@ -339,7 +362,9 @@ src/skills/
 - [ ] Create all 5 orchestrators in `src/skills/coding/`
 - [ ] Test full workflow: research → plan → implement → validate → handoff
 
-**Estimated Time:** 18-22 hours total (3-4h each skill, 15-20h for coding workflow)
+**Estimated Time:** 20-25 hours total (3-4h each skill, 15-20h for coding workflow)
+
+**Writing/Content Status:** BAML complete, TypeScript orchestrator pending
 
 **Dependencies:** Phase 2 complete
 
@@ -358,10 +383,11 @@ Phase 1: Core Infrastructure
     │        │
     │        └──→ Phase 5: Additional Skills
     │             ├─ 5a: Fabric
-    │             ├─ 5b: Prompting
-    │             ├─ 5c: Hormozi Pitch
-    │             ├─ 5d: Frontend Design
-    │             └─ 5e: Coding Workflow ⭐
+    │             ├─ 5b: Writing/Content ✅ (BAML done)
+    │             ├─ 5c: Prompting
+    │             ├─ 5d: Hormozi Pitch
+    │             ├─ 5e: Frontend Design
+    │             └─ 5f: Coding Workflow ⭐
     │
     └──→ (More skills can be added in parallel)
 ```
@@ -493,7 +519,7 @@ GOOGLE_API_KEY=...
 - [x] BAML functions generated and callable
 - [x] `bun run src/cli/index.ts "research AI safety"` calls real BAML functions
 - [x] ResearchOrchestrator coordinates 5-phase workflow
-- [ ] End-to-end test with API keys (requires OPENAI_API_KEY, ANTHROPIC_API_KEY)
+- [x] End-to-end test passed (Grade B, Coverage 82%, Confidence 78%)
 
 ### Phase 3 Complete When:
 - [ ] `curl localhost:3939/health` returns OK

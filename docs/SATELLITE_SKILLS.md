@@ -53,8 +53,8 @@ From original Qara design.
 - ReviewPR → PR description + review
 ```
 
-### 3. **Writing / Content** ✍️
-Beyond Fabric's summarize.
+### 3. **Writing / Content** ✍️ ✅
+Beyond Fabric's summarize. **[DOCUMENTED](./WRITING_CONTENT_SKILL_INTEGRATION.md)**
 ```
 - WriteBlog → Full blog posts
 - WriteEmail → Professional emails
@@ -100,21 +100,22 @@ Beyond Fabric's summarize.
 | Skill | Document |
 |-------|----------|
 | Research | `RESEARCH_SKILL_*.md` |
-| Fabric (summarize, wisdom, claims) | [FABRIC_SKILL_INTEGRATION.md](cci:7://file:///Users/jmbook/qara-v2/docs/FABRIC_SKILL_INTEGRATION.md:0:0-0:0) |
-| Prompting | [PROMPTING_SKILL_INTEGRATION.md](cci:7://file:///Users/jmbook/qara-v2/docs/PROMPTING_SKILL_INTEGRATION.md:0:0-0:0) |
-| Sales/Pitch | [HORMOZI_PITCH_SKILL_INTEGRATION.md](cci:7://file:///Users/jmbook/qara-v2/docs/HORMOZI_PITCH_SKILL_INTEGRATION.md:0:0-0:0) |
-| Frontend Design | [FRONTEND_DESIGN_SKILL_INTEGRATION.md](cci:7://file:///Users/jmbook/qara-v2/docs/FRONTEND_DESIGN_SKILL_INTEGRATION.md:0:0-0:0) |
+| Fabric (summarize, wisdom, claims) | [FABRIC_SKILL_INTEGRATION.md](./FABRIC_SKILL_INTEGRATION.md) |
+| Prompting | [PROMPTING_SKILL_INTEGRATION.md](./PROMPTING_SKILL_INTEGRATION.md) |
+| Sales/Pitch | [HORMOZI_PITCH_SKILL_INTEGRATION.md](./HORMOZI_PITCH_SKILL_INTEGRATION.md) |
+| Frontend Design | [FRONTEND_DESIGN_SKILL_INTEGRATION.md](./FRONTEND_DESIGN_SKILL_INTEGRATION.md) |
+| Writing/Content | [WRITING_CONTENT_SKILL_INTEGRATION.md](./WRITING_CONTENT_SKILL_INTEGRATION.md) |
 
 ## Recommendation
 
 **Priority order for new docs:**
 
-| Priority | Skill | Why |
-|----------|-------|-----|
-| **1** | Code Gen/Review | Core developer use case |
-| **2** | Git/Commits | High frequency, easy win |
-| **3** | Writing/Content | Broad applicability |
-| **4** | Meeting/Action Items | Business productivity |
-| **5** | Data Analysis | Technical users |
+| Priority | Skill | Status |
+|----------|-------|--------|
+| **1** | Code Gen/Review | ⏳ Pending |
+| **2** | Git/Commits | ⏳ Pending |
+| ~~3~~ | ~~Writing/Content~~ | ✅ Done |
+| **3** | Meeting/Action Items | ⏳ Pending |
+| **4** | Data Analysis | ⏳ Pending |
 
 Want me to create integration documents for any of these? I'd suggest starting with **Code Generation** since it's a core developer skill and pairs well with the Frontend Design skill.
