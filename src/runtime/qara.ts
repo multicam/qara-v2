@@ -10,6 +10,7 @@ import { b, bStream, type BamlContext } from './baml-stub';
 import { ResearchOrchestrator } from '../skills/research/orchestrator';
 import { streamResearch } from '../skills/research/stream';
 import type { SkillFunction, RouteMatch } from '../router/types';
+import { emitter } from '../observability';
 
 export interface ExecuteOptions {
   model?: string;
@@ -44,53 +45,61 @@ export class QaraRuntime {
    */
   async execute(input: string, options: ExecuteOptions = {}): Promise<ExecuteResult> {
     const startTime = performance.now();
+    emitter.startSession(input);
 
-    // 1. Route input to skill (<1ms)
-    const route = this.router.route(input);
-    if (!route) {
-      throw new Error(`No skill found for: "${input}". Try "qara list" to see available skills.`);
+    try {
+      // 1. Route input to skill (<1ms)
+      const route = this.router.route(input);
+      if (!route) {
+        throw new Error(`No skill found for: "${input}". Try "qara list" to see available skills.`);
+      }
+
+      if (options.verbose) {
+        console.log(`[router] Matched: ${route.skill.name} (${(route.confidence * 100).toFixed(0)}% ${route.matchType})`);
+      }
+
+      // 2. Execute skill
+      let result: unknown;
+
+      // Special handling for research skills - use orchestrator
+      if (route.skill.id.startsWith('research-')) {
+        const depth = (route.skill.params?.depth as 1 | 2 | 3 | 4) ?? 2;
+        const query = this.extractQuery(input, route.skill.triggers);
+        
+        result = await this.researchOrchestrator.execute(query, {
+          depth,
+          outputFormat: options.outputFormat ?? 'executive',
+          verbose: options.verbose,
+        });
+      } else {
+        // Standard BAML function execution
+        result = await this.executeBamlFunction(route, input, options);
+      }
+
+      // 3. Build response
+      const duration = performance.now() - startTime;
+      emitter.endSession(true, duration);
+
+      if (options.verbose) {
+        console.log(`[qara] Completed in ${duration.toFixed(0)}ms`);
+      }
+
+      return {
+        success: true,
+        data: result,
+        metadata: {
+          skill: route.skill.id,
+          confidence: route.confidence,
+          matchType: route.matchType,
+          duration,
+          timestamp: new Date(),
+        },
+      };
+    } catch (error) {
+      const duration = performance.now() - startTime;
+      emitter.endSession(false, duration);
+      throw error;
     }
-
-    if (options.verbose) {
-      console.log(`[router] Matched: ${route.skill.name} (${(route.confidence * 100).toFixed(0)}% ${route.matchType})`);
-    }
-
-    // 2. Execute skill
-    let result: unknown;
-
-    // Special handling for research skills - use orchestrator
-    if (route.skill.id.startsWith('research-')) {
-      const depth = (route.skill.params?.depth as 1 | 2 | 3 | 4) ?? 2;
-      const query = this.extractQuery(input, route.skill.triggers);
-      
-      result = await this.researchOrchestrator.execute(query, {
-        depth,
-        outputFormat: options.outputFormat ?? 'executive',
-        verbose: options.verbose,
-      });
-    } else {
-      // Standard BAML function execution
-      result = await this.executeBamlFunction(route, input, options);
-    }
-
-    // 3. Build response
-    const duration = performance.now() - startTime;
-
-    if (options.verbose) {
-      console.log(`[qara] Completed in ${duration.toFixed(0)}ms`);
-    }
-
-    return {
-      success: true,
-      data: result,
-      metadata: {
-        skill: route.skill.id,
-        confidence: route.confidence,
-        matchType: route.matchType,
-        duration,
-        timestamp: new Date(),
-      },
-    };
   }
 
   /**

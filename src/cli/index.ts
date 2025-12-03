@@ -7,6 +7,7 @@
 import { parseArgs } from 'util';
 import { getRuntime } from '../runtime/qara';
 import type { ExecuteOptions } from '../runtime/qara';
+import { startObservabilityServer, emitter, consoleLogger } from '../observability';
 
 interface CLIOptions {
   help: boolean;
@@ -16,6 +17,7 @@ interface CLIOptions {
   depth: number;
   format: string;
   list: boolean;
+  observability: boolean;
 }
 
 const VERSION = '2.0.0';
@@ -38,6 +40,7 @@ Options:
   -s, --stream      Stream output (real-time)
   -d, --depth       Research depth (1-4)
   -f, --format      Output format (executive|full|bullets|table)
+  -o, --observability  Enable observability server (ws://localhost:3940)
   --version         Show version
 
 Examples:
@@ -58,6 +61,7 @@ async function main(): Promise<void> {
       depth: { type: 'string', short: 'd', default: '2' },
       format: { type: 'string', short: 'f', default: 'executive' },
       list: { type: 'boolean', default: false },
+      observability: { type: 'boolean', short: 'o', default: false },
     },
     allowPositionals: true,
   });
@@ -70,6 +74,7 @@ async function main(): Promise<void> {
     depth: parseInt(values.depth as string, 10),
     format: values.format as string,
     list: values.list as boolean,
+    observability: values.observability as boolean,
   };
 
   // Handle special commands
@@ -86,6 +91,14 @@ async function main(): Promise<void> {
   if (options.list || positionals[0] === 'list') {
     listSkills();
     return;
+  }
+
+  // Start observability server if enabled
+  if (options.observability) {
+    startObservabilityServer();
+    if (options.verbose) {
+      emitter.subscribe(consoleLogger);
+    }
   }
 
   // Get input

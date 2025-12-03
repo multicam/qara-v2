@@ -6,6 +6,7 @@
  */
 
 import type { SkillFunction, RouteMatch, RouteNode } from './types';
+import { emitter } from '../observability';
 
 export class QaraRouter {
   private trie: RouteNode;
@@ -23,6 +24,7 @@ export class QaraRouter {
    * Returns skill function reference + confidence, or null if no match.
    */
   route(input: string): RouteMatch | null {
+    const startTime = performance.now();
     const tokens = this.tokenize(input);
     let node = this.trie;
     let bestMatch: SkillFunction | null = null;
@@ -45,6 +47,20 @@ export class QaraRouter {
 
     if (bestMatch) {
       const confidence = matchDepth / Math.max(tokens.length, 1);
+      const routingTimeMs = performance.now() - startTime;
+      
+      emitter.emit({
+        type: 'skill.route',
+        lane: 'router',
+        data: {
+          input,
+          matchedSkill: bestMatch.id,
+          confidence: Math.min(confidence, 1),
+          matchType,
+          routingTimeMs,
+        },
+      });
+      
       return {
         skill: bestMatch,
         confidence: Math.min(confidence, 1),
@@ -54,7 +70,24 @@ export class QaraRouter {
     }
 
     // Fallback to fuzzy matching
-    return this.fuzzyMatch(tokens);
+    const fuzzyResult = this.fuzzyMatch(tokens);
+    const routingTimeMs = performance.now() - startTime;
+    
+    if (fuzzyResult) {
+      emitter.emit({
+        type: 'skill.route',
+        lane: 'router',
+        data: {
+          input,
+          matchedSkill: fuzzyResult.skill.id,
+          confidence: fuzzyResult.confidence,
+          matchType: 'fuzzy',
+          routingTimeMs,
+        },
+      });
+    }
+    
+    return fuzzyResult;
   }
 
   /**

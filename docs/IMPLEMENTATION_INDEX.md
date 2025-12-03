@@ -238,18 +238,18 @@ qara-v2-dashboard/              # Separate SvelteKit project
 ```
 
 **Tasks:**
-- [ ] 4.1 Create `src/observability/types.ts`
-- [ ] 4.2 Create `src/observability/emitter.ts`
-- [ ] 4.3 Create `src/observability/server.ts`
-- [ ] 4.4 Instrument router with events
-- [ ] 4.5 Instrument research orchestrator with events
-- [ ] 4.6 Create SvelteKit project: `bun create svelte qara-v2-dashboard`
-- [ ] 4.7 Install Tailwind, Chart.js
-- [ ] 4.8 Create Svelte stores
-- [ ] 4.9 Create WebSocket client
-- [ ] 4.10 Create Toolbar component
-- [ ] 4.11 Create SwimLanes component
-- [ ] 4.12 Create EventList component
+- [x] 4.1 Create `src/observability/types.ts`
+- [x] 4.2 Create `src/observability/emitter.ts`
+- [x] 4.3 Create `src/observability/server.ts`
+- [x] 4.4 Instrument router with events
+- [x] 4.5 Instrument research orchestrator with events
+- [x] 4.6 Create SvelteKit project: `bun create svelte qara-v2-dashboard`
+- [x] 4.7 Install Tailwind
+- [x] 4.8 Create Svelte stores (events.svelte.ts, ui.svelte.ts)
+- [x] 4.9 Create WebSocket client
+- [x] 4.10 Create Toolbar component
+- [x] 4.11 Create SwimLanes component
+- [x] 4.12 Create EventList component
 - [ ] 4.13 Test end-to-end with research query
 
 **Estimated Time:** 6-8 hours
