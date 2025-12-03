@@ -6,7 +6,7 @@
 
 import { QaraRouter } from '../router/router';
 import { SKILLS } from '../skills/registry';
-import { b } from './baml-stub';
+import { b, bStream, type BamlContext } from './baml-stub';
 import type { SkillFunction, RouteMatch } from '../router/types';
 
 export interface ExecuteOptions {
@@ -84,7 +84,7 @@ export class QaraRuntime {
     }
 
     const funcName = route.skill.bamlFunction;
-    const streamFunc = b.stream?.[funcName];
+    const streamFunc = bStream[funcName];
 
     if (!streamFunc) {
       // Fallback to non-streaming
@@ -126,10 +126,10 @@ export class QaraRuntime {
     route: RouteMatch,
     input: string,
     options: ExecuteOptions
-  ): Record<string, unknown> {
+  ): BamlContext {
     const query = this.extractQuery(input, route.skill.triggers);
 
-    const context: Record<string, unknown> = {
+    const context: BamlContext = {
       query,
       ...route.skill.params,
     };

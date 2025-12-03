@@ -122,7 +122,7 @@ async function main(): Promise<void> {
         console.log('--- Result ---\n');
       }
 
-      console.log(formatOutput(result.data, options.format));
+      console.log(formatOutput(result.data, options.format ?? 'executive'));
     }
   } catch (error) {
     console.error('Error:', error instanceof Error ? error.message : error);
@@ -139,7 +139,7 @@ function listSkills(): void {
   // Group by category
   const categories = new Map<string, typeof skills>();
   for (const skill of skills) {
-    const category = skill.id.split('-')[0];
+    const category = skill.id.split('-')[0] ?? skill.id;
     if (!categories.has(category)) {
       categories.set(category, []);
     }

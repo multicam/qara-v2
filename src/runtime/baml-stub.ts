@@ -12,11 +12,16 @@ export interface BamlContext {
   [key: string]: unknown;
 }
 
+export type BamlFunction = (context: BamlContext) => Promise<unknown>;
+
+export type BamlStreamFunction = (context: BamlContext) => AsyncIterableIterator<unknown>;
+
 export interface BamlStub {
-  [functionName: string]: (context: BamlContext) => Promise<unknown>;
-  stream?: {
-    [functionName: string]: (context: BamlContext) => AsyncIterableIterator<unknown>;
-  };
+  [functionName: string]: BamlFunction;
+}
+
+export interface BamlStreamStub {
+  [functionName: string]: BamlStreamFunction;
 }
 
 /**
@@ -50,12 +55,12 @@ export const b: BamlStub = {
     status: 'stub',
     message: 'Use "qara list" to see available skills, or "qara --help" for usage.',
   }),
+};
 
-  stream: {
-    async *ResearchTopic(ctx: BamlContext) {
-      yield { phase: 'starting', query: ctx.query };
-      yield { phase: 'researching', progress: 50 };
-      yield { phase: 'complete', message: `[STUB] Streamed research for: "${ctx.query}"` };
-    },
+export const bStream: BamlStreamStub = {
+  async *ResearchTopic(ctx: BamlContext) {
+    yield { phase: 'starting', query: ctx.query };
+    yield { phase: 'researching', progress: 50 };
+    yield { phase: 'complete', message: `[STUB] Streamed research for: "${ctx.query}"` };
   },
 };

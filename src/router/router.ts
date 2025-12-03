@@ -31,13 +31,13 @@ export class QaraRouter {
 
     // Walk trie for exact/prefix matches
     for (let i = 0; i < tokens.length; i++) {
-      const token = tokens[i];
+      const token = tokens[i]!;
       if (!node.children.has(token)) break;
 
       node = node.children.get(token)!;
 
       if (node.isTerminal && node.skills.length > 0) {
-        bestMatch = node.skills[0];
+        bestMatch = node.skills[0]!;
         matchDepth = i + 1;
         matchType = matchDepth === tokens.length ? 'exact' : 'prefix';
       }
