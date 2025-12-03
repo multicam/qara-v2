@@ -27,6 +27,15 @@ client<llm> CustomGPT5Chat {
   }
 }
 
+client<llm> CustomGPT4Mini {
+  provider openai-responses
+  retry_policy Exponential
+  options {
+    model "gpt-4o-mini"
+    api_key env.OPENAI_API_KEY
+  }
+}
+
 // Latest Anthropic Claude 4 models
 client<llm> CustomOpus4 {
   provider anthropic
@@ -54,13 +63,13 @@ client<llm> CustomHaiku {
 }
 
 // Example Google AI client (uncomment to use)
-// client<llm> CustomGemini {
-//   provider google-ai
-//   options {
-//     model "gemini-2.5-pro"
-//     api_key env.GOOGLE_API_KEY
-//   }
-// }
+client<llm> CustomGemini {
+  provider google-ai
+  options {
+    model "gemini-2.5-pro"
+    api_key env.GOOGLE_API_KEY
+  }
+}
 
 // Example AWS Bedrock client (uncomment to use)
 // client<llm> CustomBedrock {
@@ -94,15 +103,15 @@ client<llm> CustomHaiku {
 // }
 
 // Example Ollama client for local models (uncomment to use)
-// client<llm> CustomOllama {
-//   provider openai-generic
-//   options {
-//     base_url "http://localhost:11434/v1"
-//     model "llama4"
-//     default_role "user" // Most local models prefer the user role
-//     // No API key needed for local Ollama
-//   }
-// }
+client<llm> CustomOllama {
+  provider openai-generic
+  options {
+    base_url "http://jmbox.local:11434/v1"
+    model "gemma2:2b"
+    default_role "user" // Most local models prefer the user role
+    // No API key needed for local Ollama
+  }
+}
 
 // https://docs.boundaryml.com/docs/snippets/clients/round-robin
 client<llm> CustomFast {
