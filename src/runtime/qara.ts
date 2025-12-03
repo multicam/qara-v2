@@ -7,6 +7,8 @@
 import { QaraRouter } from '../router/router';
 import { SKILLS } from '../skills/registry';
 import { b, bStream, type BamlContext } from './baml-stub';
+import { ResearchOrchestrator } from '../skills/research/orchestrator';
+import { streamResearch } from '../skills/research/stream';
 import type { SkillFunction, RouteMatch } from '../router/types';
 
 export interface ExecuteOptions {
@@ -30,9 +32,11 @@ export interface ExecuteResult {
 
 export class QaraRuntime {
   private router: QaraRouter;
+  private researchOrchestrator: ResearchOrchestrator;
 
   constructor() {
     this.router = new QaraRouter(SKILLS);
+    this.researchOrchestrator = new ResearchOrchestrator();
   }
 
   /**
@@ -51,8 +55,23 @@ export class QaraRuntime {
       console.log(`[router] Matched: ${route.skill.name} (${(route.confidence * 100).toFixed(0)}% ${route.matchType})`);
     }
 
-    // 2. Execute BAML function
-    const result = await this.executeBamlFunction(route, input, options);
+    // 2. Execute skill
+    let result: unknown;
+
+    // Special handling for research skills - use orchestrator
+    if (route.skill.id.startsWith('research-')) {
+      const depth = (route.skill.params?.depth as 1 | 2 | 3 | 4) ?? 2;
+      const query = this.extractQuery(input, route.skill.triggers);
+      
+      result = await this.researchOrchestrator.execute(query, {
+        depth,
+        outputFormat: options.outputFormat ?? 'executive',
+        verbose: options.verbose,
+      });
+    } else {
+      // Standard BAML function execution
+      result = await this.executeBamlFunction(route, input, options);
+    }
 
     // 3. Build response
     const duration = performance.now() - startTime;
@@ -83,6 +102,22 @@ export class QaraRuntime {
       throw new Error(`No skill found for: "${input}"`);
     }
 
+    // Special handling for research skills - use streaming orchestrator
+    if (route.skill.id.startsWith('research-')) {
+      const depth = (route.skill.params?.depth as 1 | 2 | 3 | 4) ?? 2;
+      const query = this.extractQuery(input, route.skill.triggers);
+
+      for await (const progress of streamResearch(query, {
+        depth,
+        outputFormat: options.outputFormat ?? 'executive',
+        verbose: options.verbose,
+      })) {
+        yield progress;
+      }
+      return;
+    }
+
+    // Standard streaming for other skills
     const funcName = route.skill.bamlFunction;
     const streamFunc = bStream[funcName];
 

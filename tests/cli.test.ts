@@ -1,13 +1,14 @@
 /**
  * CLI Tests
+ * 
+ * Note: Research skills now use real BAML functions (slow).
+ * These tests focus on CLI functionality, not research execution.
  */
 
 import { describe, test, expect } from 'bun:test';
 import { $ } from 'bun';
 
 describe('CLI', () => {
-  const cli = 'bun run src/cli/index.ts';
-
   test('shows help', async () => {
     const result = await $`bun run src/cli/index.ts --help`.cwd(import.meta.dir + '/..').text();
     expect(result).toContain('Qara v');
@@ -25,16 +26,10 @@ describe('CLI', () => {
     expect(result).toContain('Available Skills');
   });
 
-  test('routes research query', async () => {
-    const result = await $`bun run src/cli/index.ts "research AI safety"`.cwd(import.meta.dir + '/..').text();
+  test('routes write blog command (uses stub)', async () => {
+    const result = await $`bun run src/cli/index.ts "write blog about testing"`.cwd(import.meta.dir + '/..').text();
     expect(result).toContain('stub');
-    expect(result).toContain('ai safety'); // lowercase due to query extraction
-  });
-
-  test('routes with verbose flag', async () => {
-    const result = await $`bun run src/cli/index.ts "research test" --verbose`.cwd(import.meta.dir + '/..').text();
-    expect(result).toContain('Matched:');
-    expect(result).toContain('research-standard');
+    expect(result).toContain('Blog');
   });
 
   test('errors on empty input', async () => {
