@@ -3,6 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "upgrade": "bun upgrade --latest --interactive"
+  },
   "devDependencies": {
     "@boundaryml/baml": "^0.214.0",
     "@types/bun": "latest"
