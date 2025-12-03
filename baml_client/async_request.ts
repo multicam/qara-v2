@@ -23,7 +23,7 @@ import type { BamlRuntime, BamlCtxManager, ClientRegistry, Image, Audio, Pdf, Vi
 import { toBamlError, HTTPRequest } from "@boundaryml/baml"
 import type { Checked, Check } from "./types"
 import type * as types from "./types"
-import type {DecompositionRequest, DecompositionResult, ExecutiveBrief, FactCheckRequest, FactCheckResponse, FactCheckResult, Finding, FollowUpSuggestion, QualityMetrics, ResearchGap, ResearchRequest, ResearchResult, Resume, Source, SubQuery, SynthesisRequest, SynthesisResult, ValidationRequest, ValidationResult} from "./types"
+import type {BlogPost, BlogRequest, BlogSection, Change, CodeExample, ContentLength, DecompositionRequest, DecompositionResult, DocSection, DocType, Documentation, DocumentationRequest, EditFocus, EditRequest, EditedContent, Email, EmailRequest, EmailType, ExecutiveBrief, FactCheckRequest, FactCheckResponse, FactCheckResult, Finding, FollowUpSuggestion, QualityMetrics, ResearchGap, ResearchRequest, ResearchResult, Resume, Source, SubQuery, SynthesisRequest, SynthesisResult, TranslateRequest, TranslatedContent, ValidationRequest, ValidationResult, WritingTone} from "./types"
 import type TypeBuilder from "./type_builder"
 import type * as events from "./events"
 
@@ -52,6 +52,31 @@ env?: Record<string, string | undefined>
       );
       return await this.runtime.buildRequest(
       "DecomposeQuery",
+      {
+      "req": req
+      },
+      this.ctxManager.cloneContext(),
+      __baml_options__?.tb?.__tb(),
+      __baml_options__?.clientRegistry,
+      false,
+      env
+      )
+      } catch (error) {
+      throw toBamlError(error);
+      }
+      }
+      
+  async EditContent(
+  req: types.EditRequest,
+  __baml_options__?: BamlCallOptions<never>
+  ): Promise<HTTPRequest> {
+    try {
+    const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+    const env: Record<string, string> = Object.fromEntries(
+      Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+      );
+      return await this.runtime.buildRequest(
+      "EditContent",
       {
       "req": req
       },
@@ -166,6 +191,31 @@ env?: Record<string, string | undefined>
       }
       }
       
+  async TranslateContent(
+  req: types.TranslateRequest,
+  __baml_options__?: BamlCallOptions<never>
+  ): Promise<HTTPRequest> {
+    try {
+    const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+    const env: Record<string, string> = Object.fromEntries(
+      Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+      );
+      return await this.runtime.buildRequest(
+      "TranslateContent",
+      {
+      "req": req
+      },
+      this.ctxManager.cloneContext(),
+      __baml_options__?.tb?.__tb(),
+      __baml_options__?.clientRegistry,
+      false,
+      env
+      )
+      } catch (error) {
+      throw toBamlError(error);
+      }
+      }
+      
   async ValidateResearchScope(
   req: types.ValidationRequest,
   __baml_options__?: BamlCallOptions<never>
@@ -177,6 +227,81 @@ env?: Record<string, string | undefined>
       );
       return await this.runtime.buildRequest(
       "ValidateResearchScope",
+      {
+      "req": req
+      },
+      this.ctxManager.cloneContext(),
+      __baml_options__?.tb?.__tb(),
+      __baml_options__?.clientRegistry,
+      false,
+      env
+      )
+      } catch (error) {
+      throw toBamlError(error);
+      }
+      }
+      
+  async WriteBlog(
+  req: types.BlogRequest,
+  __baml_options__?: BamlCallOptions<never>
+  ): Promise<HTTPRequest> {
+    try {
+    const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+    const env: Record<string, string> = Object.fromEntries(
+      Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+      );
+      return await this.runtime.buildRequest(
+      "WriteBlog",
+      {
+      "req": req
+      },
+      this.ctxManager.cloneContext(),
+      __baml_options__?.tb?.__tb(),
+      __baml_options__?.clientRegistry,
+      false,
+      env
+      )
+      } catch (error) {
+      throw toBamlError(error);
+      }
+      }
+      
+  async WriteDocumentation(
+  req: types.DocumentationRequest,
+  __baml_options__?: BamlCallOptions<never>
+  ): Promise<HTTPRequest> {
+    try {
+    const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+    const env: Record<string, string> = Object.fromEntries(
+      Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+      );
+      return await this.runtime.buildRequest(
+      "WriteDocumentation",
+      {
+      "req": req
+      },
+      this.ctxManager.cloneContext(),
+      __baml_options__?.tb?.__tb(),
+      __baml_options__?.clientRegistry,
+      false,
+      env
+      )
+      } catch (error) {
+      throw toBamlError(error);
+      }
+      }
+      
+  async WriteEmail(
+  req: types.EmailRequest,
+  __baml_options__?: BamlCallOptions<never>
+  ): Promise<HTTPRequest> {
+    try {
+    const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+    const env: Record<string, string> = Object.fromEntries(
+      Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+      );
+      return await this.runtime.buildRequest(
+      "WriteEmail",
       {
       "req": req
       },
@@ -208,6 +333,31 @@ env?: Record<string, string | undefined>
           );
           return await this.runtime.buildRequest(
           "DecomposeQuery",
+          {
+          "req": req
+          },
+          this.ctxManager.cloneContext(),
+          __baml_options__?.tb?.__tb(),
+          __baml_options__?.clientRegistry,
+          true,
+          env
+          )
+          } catch (error) {
+          throw toBamlError(error);
+          }
+          }
+          
+      async EditContent(
+      req: types.EditRequest,
+      __baml_options__?: BamlCallOptions<never>
+      ): Promise<HTTPRequest> {
+        try {
+        const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+        const env: Record<string, string> = Object.fromEntries(
+          Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+          );
+          return await this.runtime.buildRequest(
+          "EditContent",
           {
           "req": req
           },
@@ -322,6 +472,31 @@ env?: Record<string, string | undefined>
           }
           }
           
+      async TranslateContent(
+      req: types.TranslateRequest,
+      __baml_options__?: BamlCallOptions<never>
+      ): Promise<HTTPRequest> {
+        try {
+        const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+        const env: Record<string, string> = Object.fromEntries(
+          Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+          );
+          return await this.runtime.buildRequest(
+          "TranslateContent",
+          {
+          "req": req
+          },
+          this.ctxManager.cloneContext(),
+          __baml_options__?.tb?.__tb(),
+          __baml_options__?.clientRegistry,
+          true,
+          env
+          )
+          } catch (error) {
+          throw toBamlError(error);
+          }
+          }
+          
       async ValidateResearchScope(
       req: types.ValidationRequest,
       __baml_options__?: BamlCallOptions<never>
@@ -333,6 +508,81 @@ env?: Record<string, string | undefined>
           );
           return await this.runtime.buildRequest(
           "ValidateResearchScope",
+          {
+          "req": req
+          },
+          this.ctxManager.cloneContext(),
+          __baml_options__?.tb?.__tb(),
+          __baml_options__?.clientRegistry,
+          true,
+          env
+          )
+          } catch (error) {
+          throw toBamlError(error);
+          }
+          }
+          
+      async WriteBlog(
+      req: types.BlogRequest,
+      __baml_options__?: BamlCallOptions<never>
+      ): Promise<HTTPRequest> {
+        try {
+        const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+        const env: Record<string, string> = Object.fromEntries(
+          Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+          );
+          return await this.runtime.buildRequest(
+          "WriteBlog",
+          {
+          "req": req
+          },
+          this.ctxManager.cloneContext(),
+          __baml_options__?.tb?.__tb(),
+          __baml_options__?.clientRegistry,
+          true,
+          env
+          )
+          } catch (error) {
+          throw toBamlError(error);
+          }
+          }
+          
+      async WriteDocumentation(
+      req: types.DocumentationRequest,
+      __baml_options__?: BamlCallOptions<never>
+      ): Promise<HTTPRequest> {
+        try {
+        const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+        const env: Record<string, string> = Object.fromEntries(
+          Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+          );
+          return await this.runtime.buildRequest(
+          "WriteDocumentation",
+          {
+          "req": req
+          },
+          this.ctxManager.cloneContext(),
+          __baml_options__?.tb?.__tb(),
+          __baml_options__?.clientRegistry,
+          true,
+          env
+          )
+          } catch (error) {
+          throw toBamlError(error);
+          }
+          }
+          
+      async WriteEmail(
+      req: types.EmailRequest,
+      __baml_options__?: BamlCallOptions<never>
+      ): Promise<HTTPRequest> {
+        try {
+        const rawEnv = __baml_options__?.env ? { ...process.env, ...__baml_options__.env } : { ...process.env };
+        const env: Record<string, string> = Object.fromEntries(
+          Object.entries(rawEnv).filter(([_, value]) => value !== undefined) as [string, string][]
+          );
+          return await this.runtime.buildRequest(
+          "WriteEmail",
           {
           "req": req
           },

@@ -25,8 +25,8 @@ function WriteBlog(req: BlogRequest) -> BlogPost {
     **Target Audience:** {{ req.target_audience }}
     {% endif %}
     
-    **Tone:** {{ req.tone ?? "Professional" }}
-    **Length:** {{ req.length ?? "Medium" }} (aim for appropriate word count)
+    **Tone:** {% if req.tone %}{{ req.tone }}{% else %}Professional{% endif %}
+    **Length:** {% if req.length %}{{ req.length }}{% else %}Medium{% endif %} (aim for appropriate word count)
     
     {% if req.key_points %}
     **Must Include These Points:**

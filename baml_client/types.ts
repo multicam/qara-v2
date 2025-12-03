@@ -47,6 +47,96 @@ export function all_succeeded<CheckName extends string>(checks: Record<CheckName
 export function get_checks<CheckName extends string>(checks: Record<CheckName, Check>): Check[] {
     return Object.values(checks)
 }
+export enum ContentLength {
+  Short = "Short",
+  Medium = "Medium",
+  Long = "Long",
+  Extended = "Extended",
+}
+
+export enum DocType {
+  API = "API",
+  Tutorial = "Tutorial",
+  HowTo = "HowTo",
+  Reference = "Reference",
+  Conceptual = "Conceptual",
+  Troubleshooting = "Troubleshooting",
+  Changelog = "Changelog",
+}
+
+export enum EditFocus {
+  Grammar = "Grammar",
+  Clarity = "Clarity",
+  Conciseness = "Conciseness",
+  Tone = "Tone",
+  Structure = "Structure",
+  All = "All",
+}
+
+export enum EmailType {
+  Introduction = "Introduction",
+  FollowUp = "FollowUp",
+  Request = "Request",
+  ThankYou = "ThankYou",
+  Apology = "Apology",
+  Announcement = "Announcement",
+  Proposal = "Proposal",
+  ColdOutreach = "ColdOutreach",
+}
+
+export enum WritingTone {
+  Professional = "Professional",
+  Casual = "Casual",
+  Technical = "Technical",
+  Persuasive = "Persuasive",
+  Academic = "Academic",
+  Friendly = "Friendly",
+}
+
+export interface BlogPost {
+  title: string
+  subtitle?: string | null
+  meta_description: string
+  tags: string[]
+  estimated_read_time: number
+  sections: BlogSection[]
+  call_to_action?: string | null
+  
+}
+
+export interface BlogRequest {
+  topic: string
+  target_audience?: string | null
+  tone?: WritingTone | null
+  length?: ContentLength | null
+  key_points?: string[] | null
+  include_examples?: boolean | null
+  seo_keywords?: string[] | null
+  
+}
+
+export interface BlogSection {
+  heading: string
+  content: string
+  key_points?: string[] | null
+  
+}
+
+export interface Change {
+  type: string
+  description: string
+  before?: string | null
+  after?: string | null
+  
+}
+
+export interface CodeExample {
+  language: string
+  description: string
+  code: string
+  
+}
+
 export interface DecompositionRequest {
   query: string
   depth: number
@@ -58,6 +148,73 @@ export interface DecompositionResult {
   primary_queries: SubQuery[]
   validation_queries: SubQuery[]
   edge_queries?: SubQuery[] | null
+  
+}
+
+export interface DocSection {
+  heading: string
+  content: string
+  subsections?: DocSection[] | null
+  
+}
+
+export interface Documentation {
+  title: string
+  overview: string
+  sections: DocSection[]
+  code_examples?: CodeExample[] | null
+  related_topics?: string[] | null
+  last_updated: string
+  
+}
+
+export interface DocumentationRequest {
+  topic: string
+  doc_type?: DocType | null
+  target_audience?: string | null
+  include_code_examples?: boolean | null
+  programming_language?: string | null
+  existing_content?: string | null
+  
+}
+
+export interface EditRequest {
+  content: string
+  focus?: EditFocus | null
+  target_tone?: WritingTone | null
+  preserve_voice?: boolean | null
+  max_word_count?: number | null
+  
+}
+
+export interface EditedContent {
+  original_word_count: number
+  edited_word_count: number
+  content: string
+  changes_made: Change[]
+  readability_score: number
+  
+}
+
+export interface Email {
+  subject: string
+  greeting: string
+  body: string
+  closing: string
+  signature?: string | null
+  tone_used: WritingTone
+  
+}
+
+export interface EmailRequest {
+  purpose: string
+  recipient: string
+  context?: string | null
+  email_type?: EmailType | null
+  tone?: WritingTone | null
+  key_points?: string[] | null
+  sender_name?: string | null
+  sender_title?: string | null
   
 }
 
@@ -187,6 +344,26 @@ export interface SynthesisResult {
   detailed_analysis: string
   source_appendix: string
   quality: QualityMetrics
+  
+}
+
+export interface TranslateRequest {
+  content: string
+  target_language: string
+  source_language?: string | null
+  preserve_formatting?: boolean | null
+  localize?: boolean | null
+  domain?: string | null
+  
+}
+
+export interface TranslatedContent {
+  source_language: string
+  target_language: string
+  original_content: string
+  translated_content: string
+  translation_notes?: string[] | null
+  cultural_adaptations?: string[] | null
   
 }
 

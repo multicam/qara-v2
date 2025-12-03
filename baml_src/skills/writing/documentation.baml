@@ -19,8 +19,8 @@ function WriteDocumentation(req: DocumentationRequest) -> Documentation {
     Write documentation for:
     
     **Topic:** {{ req.topic }}
-    **Type:** {{ req.doc_type ?? "HowTo" }}
-    **Audience:** {{ req.target_audience ?? "intermediate" }}
+    **Type:** {% if req.doc_type %}{{ req.doc_type }}{% else %}HowTo{% endif %}
+    **Audience:** {% if req.target_audience %}{{ req.target_audience }}{% else %}intermediate{% endif %}
     
     {% if req.existing_content %}
     **Existing Content to Expand:**

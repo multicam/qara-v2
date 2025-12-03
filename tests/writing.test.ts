@@ -163,7 +163,7 @@ describe('Writing Skill - WriteDocumentation', () => {
         }
       ],
       related_topics: ["BAML Functions", "Router", "CLI"],
-      last_updated: new Date().toISOString().split('T')[0]
+      last_updated: new Date().toISOString().split('T')[0]!
     };
 
     // Assertions
@@ -172,7 +172,7 @@ describe('Writing Skill - WriteDocumentation', () => {
     expect(result.sections.length).toBeGreaterThan(0);
     expect(result.code_examples).toBeDefined();
     expect(result.code_examples!.length).toBeGreaterThan(0);
-    expect(result.code_examples![0].language).toBe('typescript');
+    expect(result.code_examples![0]!.language).toBe('typescript');
     
     console.log('\n📚 Documentation Generated:');
     console.log(`   Title: ${result.title}`);

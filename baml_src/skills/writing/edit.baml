@@ -21,7 +21,7 @@ function EditContent(req: EditRequest) -> EditedContent {
     {{ req.content }}
     ---
     
-    **Focus:** {{ req.focus ?? "All" }}
+    **Focus:** {% if req.focus %}{{ req.focus }}{% else %}All{% endif %}
     {% if req.target_tone %}
     **Target Tone:** {{ req.target_tone }}
     {% endif %}

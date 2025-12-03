@@ -22,8 +22,8 @@ function WriteEmail(req: EmailRequest) -> Email {
     
     **Purpose:** {{ req.purpose }}
     **Recipient:** {{ req.recipient }}
-    **Type:** {{ req.email_type ?? "Request" }}
-    **Tone:** {{ req.tone ?? "Professional" }}
+    **Type:** {% if req.email_type %}{{ req.email_type }}{% else %}Request{% endif %}
+    **Tone:** {% if req.tone %}{{ req.tone }}{% else %}Professional{% endif %}
     
     {% if req.context %}
     **Context:** {{ req.context }}

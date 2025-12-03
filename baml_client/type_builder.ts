@@ -27,9 +27,33 @@ export { FieldType, EnumBuilder, ClassBuilder }
 export default class TypeBuilder {
     private tb: _TypeBuilder;
     
+    BlogPost: ClassViewer<'BlogPost', "title" | "subtitle" | "meta_description" | "tags" | "estimated_read_time" | "sections" | "call_to_action">;
+    
+    BlogRequest: ClassViewer<'BlogRequest', "topic" | "target_audience" | "tone" | "length" | "key_points" | "include_examples" | "seo_keywords">;
+    
+    BlogSection: ClassViewer<'BlogSection', "heading" | "content" | "key_points">;
+    
+    Change: ClassViewer<'Change', "type" | "description" | "before" | "after">;
+    
+    CodeExample: ClassViewer<'CodeExample', "language" | "description" | "code">;
+    
     DecompositionRequest: ClassViewer<'DecompositionRequest', "query" | "depth" | "validation">;
     
     DecompositionResult: ClassViewer<'DecompositionResult', "primary_queries" | "validation_queries" | "edge_queries">;
+    
+    DocSection: ClassViewer<'DocSection', "heading" | "content" | "subsections">;
+    
+    Documentation: ClassViewer<'Documentation', "title" | "overview" | "sections" | "code_examples" | "related_topics" | "last_updated">;
+    
+    DocumentationRequest: ClassViewer<'DocumentationRequest', "topic" | "doc_type" | "target_audience" | "include_code_examples" | "programming_language" | "existing_content">;
+    
+    EditRequest: ClassViewer<'EditRequest', "content" | "focus" | "target_tone" | "preserve_voice" | "max_word_count">;
+    
+    EditedContent: ClassViewer<'EditedContent', "original_word_count" | "edited_word_count" | "content" | "changes_made" | "readability_score">;
+    
+    Email: ClassViewer<'Email', "subject" | "greeting" | "body" | "closing" | "signature" | "tone_used">;
+    
+    EmailRequest: ClassViewer<'EmailRequest', "purpose" | "recipient" | "context" | "email_type" | "tone" | "key_points" | "sender_name" | "sender_title">;
     
     ExecutiveBrief: ClassViewer<'ExecutiveBrief', "title" | "date" | "research_question" | "key_findings" | "critical_distinctions" | "confidence_summary" | "strategic_implications" | "recommended_actions" | "read_time">;
     
@@ -61,22 +85,56 @@ export default class TypeBuilder {
     
     SynthesisResult: ClassViewer<'SynthesisResult', "executive_brief" | "detailed_analysis" | "source_appendix" | "quality">;
     
+    TranslateRequest: ClassViewer<'TranslateRequest', "content" | "target_language" | "source_language" | "preserve_formatting" | "localize" | "domain">;
+    
+    TranslatedContent: ClassViewer<'TranslatedContent', "source_language" | "target_language" | "original_content" | "translated_content" | "translation_notes" | "cultural_adaptations">;
+    
     ValidationRequest: ClassViewer<'ValidationRequest', "query" | "context">;
     
     ValidationResult: ClassViewer<'ValidationResult', "is_clear" | "topics" | "relationship" | "time_period" | "primary_sources" | "recommended_structure" | "clarification_needed">;
     
     
+    ContentLength: EnumViewer<'ContentLength', "Short" | "Medium" | "Long" | "Extended">;
+    
+    DocType: EnumViewer<'DocType', "API" | "Tutorial" | "HowTo" | "Reference" | "Conceptual" | "Troubleshooting" | "Changelog">;
+    
+    EditFocus: EnumViewer<'EditFocus', "Grammar" | "Clarity" | "Conciseness" | "Tone" | "Structure" | "All">;
+    
+    EmailType: EnumViewer<'EmailType', "Introduction" | "FollowUp" | "Request" | "ThankYou" | "Apology" | "Announcement" | "Proposal" | "ColdOutreach">;
+    
+    WritingTone: EnumViewer<'WritingTone', "Professional" | "Casual" | "Technical" | "Persuasive" | "Academic" | "Friendly">;
+    
 
     constructor() {
         this.tb = new _TypeBuilder({
           classes: new Set([
-            "DecompositionRequest","DecompositionResult","ExecutiveBrief","FactCheckRequest","FactCheckResponse","FactCheckResult","Finding","FollowUpSuggestion","QualityMetrics","ResearchGap","ResearchRequest","ResearchResult","Resume","Source","SubQuery","SynthesisRequest","SynthesisResult","ValidationRequest","ValidationResult",
+            "BlogPost","BlogRequest","BlogSection","Change","CodeExample","DecompositionRequest","DecompositionResult","DocSection","Documentation","DocumentationRequest","EditRequest","EditedContent","Email","EmailRequest","ExecutiveBrief","FactCheckRequest","FactCheckResponse","FactCheckResult","Finding","FollowUpSuggestion","QualityMetrics","ResearchGap","ResearchRequest","ResearchResult","Resume","Source","SubQuery","SynthesisRequest","SynthesisResult","TranslateRequest","TranslatedContent","ValidationRequest","ValidationResult",
           ]),
           enums: new Set([
-            
+            "ContentLength","DocType","EditFocus","EmailType","WritingTone",
           ]),
           runtime: DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIME
         });
+        
+        this.BlogPost = this.tb.classViewer("BlogPost", [
+          "title","subtitle","meta_description","tags","estimated_read_time","sections","call_to_action",
+        ]);
+        
+        this.BlogRequest = this.tb.classViewer("BlogRequest", [
+          "topic","target_audience","tone","length","key_points","include_examples","seo_keywords",
+        ]);
+        
+        this.BlogSection = this.tb.classViewer("BlogSection", [
+          "heading","content","key_points",
+        ]);
+        
+        this.Change = this.tb.classViewer("Change", [
+          "type","description","before","after",
+        ]);
+        
+        this.CodeExample = this.tb.classViewer("CodeExample", [
+          "language","description","code",
+        ]);
         
         this.DecompositionRequest = this.tb.classViewer("DecompositionRequest", [
           "query","depth","validation",
@@ -84,6 +142,34 @@ export default class TypeBuilder {
         
         this.DecompositionResult = this.tb.classViewer("DecompositionResult", [
           "primary_queries","validation_queries","edge_queries",
+        ]);
+        
+        this.DocSection = this.tb.classViewer("DocSection", [
+          "heading","content","subsections",
+        ]);
+        
+        this.Documentation = this.tb.classViewer("Documentation", [
+          "title","overview","sections","code_examples","related_topics","last_updated",
+        ]);
+        
+        this.DocumentationRequest = this.tb.classViewer("DocumentationRequest", [
+          "topic","doc_type","target_audience","include_code_examples","programming_language","existing_content",
+        ]);
+        
+        this.EditRequest = this.tb.classViewer("EditRequest", [
+          "content","focus","target_tone","preserve_voice","max_word_count",
+        ]);
+        
+        this.EditedContent = this.tb.classViewer("EditedContent", [
+          "original_word_count","edited_word_count","content","changes_made","readability_score",
+        ]);
+        
+        this.Email = this.tb.classViewer("Email", [
+          "subject","greeting","body","closing","signature","tone_used",
+        ]);
+        
+        this.EmailRequest = this.tb.classViewer("EmailRequest", [
+          "purpose","recipient","context","email_type","tone","key_points","sender_name","sender_title",
         ]);
         
         this.ExecutiveBrief = this.tb.classViewer("ExecutiveBrief", [
@@ -146,6 +232,14 @@ export default class TypeBuilder {
           "executive_brief","detailed_analysis","source_appendix","quality",
         ]);
         
+        this.TranslateRequest = this.tb.classViewer("TranslateRequest", [
+          "content","target_language","source_language","preserve_formatting","localize","domain",
+        ]);
+        
+        this.TranslatedContent = this.tb.classViewer("TranslatedContent", [
+          "source_language","target_language","original_content","translated_content","translation_notes","cultural_adaptations",
+        ]);
+        
         this.ValidationRequest = this.tb.classViewer("ValidationRequest", [
           "query","context",
         ]);
@@ -154,6 +248,26 @@ export default class TypeBuilder {
           "is_clear","topics","relationship","time_period","primary_sources","recommended_structure","clarification_needed",
         ]);
         
+        
+        this.ContentLength = this.tb.enumViewer("ContentLength", [
+          "Short","Medium","Long","Extended",
+        ]);
+        
+        this.DocType = this.tb.enumViewer("DocType", [
+          "API","Tutorial","HowTo","Reference","Conceptual","Troubleshooting","Changelog",
+        ]);
+        
+        this.EditFocus = this.tb.enumViewer("EditFocus", [
+          "Grammar","Clarity","Conciseness","Tone","Structure","All",
+        ]);
+        
+        this.EmailType = this.tb.enumViewer("EmailType", [
+          "Introduction","FollowUp","Request","ThankYou","Apology","Announcement","Proposal","ColdOutreach",
+        ]);
+        
+        this.WritingTone = this.tb.enumViewer("WritingTone", [
+          "Professional","Casual","Technical","Persuasive","Academic","Friendly",
+        ]);
         
     }
 

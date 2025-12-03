@@ -20,7 +20,7 @@ $ pnpm add @boundaryml/baml
 
 import type { Image, Audio, Pdf, Video } from "@boundaryml/baml"
 import type { Checked, Check } from "./types"
-import type {  DecompositionRequest,  DecompositionResult,  ExecutiveBrief,  FactCheckRequest,  FactCheckResponse,  FactCheckResult,  Finding,  FollowUpSuggestion,  QualityMetrics,  ResearchGap,  ResearchRequest,  ResearchResult,  Resume,  Source,  SubQuery,  SynthesisRequest,  SynthesisResult,  ValidationRequest,  ValidationResult } from "./types"
+import type {  BlogPost,  BlogRequest,  BlogSection,  Change,  CodeExample,  ContentLength,  DecompositionRequest,  DecompositionResult,  DocSection,  DocType,  Documentation,  DocumentationRequest,  EditFocus,  EditRequest,  EditedContent,  Email,  EmailRequest,  EmailType,  ExecutiveBrief,  FactCheckRequest,  FactCheckResponse,  FactCheckResult,  Finding,  FollowUpSuggestion,  QualityMetrics,  ResearchGap,  ResearchRequest,  ResearchResult,  Resume,  Source,  SubQuery,  SynthesisRequest,  SynthesisResult,  TranslateRequest,  TranslatedContent,  ValidationRequest,  ValidationResult,  WritingTone } from "./types"
 import type * as types from "./types"
 
 /******************************************************************************
@@ -36,6 +36,40 @@ export interface StreamState<T> {
 }
 
 export namespace partial_types {
+    export interface BlogPost {
+      title?: string | null
+      subtitle?: string | null
+      meta_description?: string | null
+      tags: string[]
+      estimated_read_time?: number | null
+      sections: BlogSection[]
+      call_to_action?: string | null
+    }
+    export interface BlogRequest {
+      topic?: string | null
+      target_audience?: string | null
+      tone?: types.WritingTone | null
+      length?: types.ContentLength | null
+      key_points?: string[] | null
+      include_examples?: boolean | null
+      seo_keywords?: string[] | null
+    }
+    export interface BlogSection {
+      heading?: string | null
+      content?: string | null
+      key_points?: string[] | null
+    }
+    export interface Change {
+      type?: string | null
+      description?: string | null
+      before?: string | null
+      after?: string | null
+    }
+    export interface CodeExample {
+      language?: string | null
+      description?: string | null
+      code?: string | null
+    }
     export interface DecompositionRequest {
       query?: string | null
       depth?: number | null
@@ -45,6 +79,59 @@ export namespace partial_types {
       primary_queries: SubQuery[]
       validation_queries: SubQuery[]
       edge_queries?: SubQuery[] | null
+    }
+    export interface DocSection {
+      heading?: string | null
+      content?: string | null
+      subsections?: DocSection[] | null
+    }
+    export interface Documentation {
+      title?: string | null
+      overview?: string | null
+      sections: DocSection[]
+      code_examples?: CodeExample[] | null
+      related_topics?: string[] | null
+      last_updated?: string | null
+    }
+    export interface DocumentationRequest {
+      topic?: string | null
+      doc_type?: types.DocType | null
+      target_audience?: string | null
+      include_code_examples?: boolean | null
+      programming_language?: string | null
+      existing_content?: string | null
+    }
+    export interface EditRequest {
+      content?: string | null
+      focus?: types.EditFocus | null
+      target_tone?: types.WritingTone | null
+      preserve_voice?: boolean | null
+      max_word_count?: number | null
+    }
+    export interface EditedContent {
+      original_word_count?: number | null
+      edited_word_count?: number | null
+      content?: string | null
+      changes_made: Change[]
+      readability_score?: number | null
+    }
+    export interface Email {
+      subject?: string | null
+      greeting?: string | null
+      body?: string | null
+      closing?: string | null
+      signature?: string | null
+      tone_used?: types.WritingTone | null
+    }
+    export interface EmailRequest {
+      purpose?: string | null
+      recipient?: string | null
+      context?: string | null
+      email_type?: types.EmailType | null
+      tone?: types.WritingTone | null
+      key_points?: string[] | null
+      sender_name?: string | null
+      sender_title?: string | null
     }
     export interface ExecutiveBrief {
       title?: string | null
@@ -144,6 +231,22 @@ export namespace partial_types {
       detailed_analysis?: string | null
       source_appendix?: string | null
       quality?: QualityMetrics | null
+    }
+    export interface TranslateRequest {
+      content?: string | null
+      target_language?: string | null
+      source_language?: string | null
+      preserve_formatting?: boolean | null
+      localize?: boolean | null
+      domain?: string | null
+    }
+    export interface TranslatedContent {
+      source_language?: string | null
+      target_language?: string | null
+      original_content?: string | null
+      translated_content?: string | null
+      translation_notes?: string[] | null
+      cultural_adaptations?: string[] | null
     }
     export interface ValidationRequest {
       query?: string | null

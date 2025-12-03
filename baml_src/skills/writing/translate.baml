@@ -29,7 +29,7 @@ function TranslateContent(req: TranslateRequest) -> TranslatedContent {
     **Source Language:** Auto-detect
     {% endif %}
     
-    **Domain:** {{ req.domain ?? "general" }}
+    **Domain:** {% if req.domain %}{{ req.domain }}{% else %}general{% endif %}
     {% if req.localize %}
     **Localization:** Yes - adapt cultural references for target audience
     {% endif %}
