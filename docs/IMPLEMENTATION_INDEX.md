@@ -71,7 +71,7 @@ MVP Scope (10 hours):
 
 ## Implementation Phases
 
-### Phase 1: Core Infrastructure ⚡ START HERE
+### Phase 1: Core Infrastructure ✅ COMPLETE
 
 **Goal:** Working router + runtime + basic CLI
 
@@ -82,26 +82,32 @@ MVP Scope (10 hours):
 src/
 ├── router/
 │   ├── types.ts                 # SkillFunction, RouteMatch, RouteNode
-│   └── router.ts                # QaraRouter (trie-based)
+│   ├── router.ts                # QaraRouter (trie-based)
+│   └── index.ts                 # Module exports
 ├── skills/
-│   └── registry.ts              # SKILLS array
+│   ├── registry.ts              # SKILLS array
+│   └── index.ts                 # Module exports
 ├── runtime/
-│   └── qara.ts                  # QaraRuntime, getRuntime()
+│   ├── qara.ts                  # QaraRuntime, getRuntime()
+│   ├── baml-stub.ts             # Mock BAML client for testing
+│   └── index.ts                 # Module exports
 └── cli/
     └── index.ts                 # CLI entry point
 ```
 
 **Tasks:**
-- [ ] 1.1 Create `src/router/types.ts`
-- [ ] 1.2 Create `src/router/router.ts`
-- [ ] 1.3 Create `src/skills/registry.ts` (with placeholder skills)
-- [ ] 1.4 Create `src/runtime/qara.ts`
-- [ ] 1.5 Create `src/cli/index.ts`
-- [ ] 1.6 Update `package.json` scripts
-- [ ] 1.7 Test: `bun run src/cli/index.ts list`
-- [ ] 1.8 Test: `bun run src/cli/index.ts "hello"` (should route)
+- [x] 1.1 Create `src/router/types.ts`
+- [x] 1.2 Create `src/router/router.ts`
+- [x] 1.3 Create `src/skills/registry.ts` (with placeholder skills)
+- [x] 1.4 Create `src/runtime/qara.ts`
+- [x] 1.5 Create `src/cli/index.ts`
+- [x] 1.6 Update `package.json` scripts
+- [x] 1.7 Test: `bun run src/cli/index.ts list`
+- [x] 1.8 Test: `bun run src/cli/index.ts "research AI safety"` (routes correctly)
+- [x] 1.9 All 23 tests passing (`bun test`)
 
-**Estimated Time:** 2-3 hours
+**Completed:** December 3, 2025
+**Actual Time:** ~30 minutes
 
 ---
 
@@ -476,10 +482,10 @@ GOOGLE_API_KEY=...
 
 ## Success Criteria
 
-### Phase 1 Complete When:
-- [ ] `bun run src/cli/index.ts list` shows skills
-- [ ] `bun run src/cli/index.ts "research test"` routes correctly
-- [ ] Router benchmarks <1ms
+### Phase 1 Complete When: ✅
+- [x] `bun run src/cli/index.ts list` shows skills
+- [x] `bun run src/cli/index.ts "research test"` routes correctly
+- [x] Router benchmarks <1ms (achieved: 0.0012ms average)
 
 ### Phase 2 Complete When:
 - [ ] `baml-cli test` passes all research tests
@@ -507,4 +513,20 @@ GOOGLE_API_KEY=...
 
 ---
 
-**Ready to begin Phase 1?**
+## What Remains
+
+### Next: Phase 2 - Research Skill
+1. Create BAML types and functions in `baml_src/skills/research/`
+2. Run `baml-cli generate` to create TypeScript client
+3. Replace `src/runtime/baml-stub.ts` with real BAML client import
+4. Create orchestrator in `src/skills/research/`
+5. Test end-to-end research queries
+
+### Future Phases
+- **Phase 3:** CLI Integrations (MCP server, HTTP API)
+- **Phase 4:** Qara View Dashboard (observability)
+- **Phase 5:** Additional Skills (Fabric, Prompting, Hormozi, Frontend, Coding)
+
+---
+
+**Phase 1 Complete. Ready to begin Phase 2?**

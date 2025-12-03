@@ -1,9 +1,19 @@
 {
   "name": "qara-v2",
-  "module": "index.ts",
+  "version": "2.0.0",
+  "module": "src/cli/index.ts",
   "type": "module",
   "private": true,
+  "bin": {
+    "qara": "./src/cli/index.ts"
+  },
   "scripts": {
+    "start": "bun run src/cli/index.ts",
+    "dev": "bun --watch run src/cli/index.ts",
+    "build": "bun build src/cli/index.ts --outdir=dist --target=bun",
+    "test": "bun test",
+    "baml:generate": "baml-cli generate",
+    "baml:test": "baml-cli test",
     "upgrade": "bun upgrade --latest --interactive"
   },
   "devDependencies": {
