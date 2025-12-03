@@ -6,6 +6,40 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Is <1ms Routing Actually Valuable?
+
+**Context:** LLM calls take 1-30 seconds. Router takes <1ms.
+
+| Scenario | Router Time | LLM Time | Router % of Total |
+|----------|-------------|----------|-------------------|
+| Quick research | 0.5ms | 15,000ms | 0.003% |
+| Deep research | 0.5ms | 120,000ms | 0.0004% |
+
+**Question:** Is the trie optimization worth the complexity?
+
+**Counter-argument:** The trie is simple, works, and future-proofs for more skills. Keep it.
+
+### Fuzzy Matching Threshold
+
+The 30% overlap threshold for fuzzy matching is arbitrary:
+- Too low = false positives
+- Too high = missed matches
+
+**Recommendation:** Make this configurable and log match confidence for tuning.
+
+### Missing: Error Handling
+
+The router code doesn't address:
+- What if no skill matches? (Returns null, but then what?)
+- What if multiple skills match equally?
+- How to handle typos in triggers?
+
+**Recommendation:** Add a "fallback" or "help" skill for no-match cases.
+
+---
+
 ## Overview
 
 This document details the implementation of Qara v2's deterministic router and CLI interface. The router provides O(k) routing where k = input tokens, achieving <1ms latency compared to 1-3 seconds with AI-based routing.

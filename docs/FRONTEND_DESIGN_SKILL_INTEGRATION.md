@@ -7,6 +7,49 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Existing Tools Do This
+
+| Tool | Component Generation | Design Systems | Code Output |
+|------|---------------------|----------------|-------------|
+| **v0.dev** | ✅ Excellent | ✅ | ✅ React/Tailwind |
+| **Claude Artifacts** | ✅ Good | ❌ | ✅ React |
+| **Cursor/Windsurf** | ✅ Good | ❌ | ✅ Any framework |
+| **This Skill** | ✅ Planned | ✅ Planned | ✅ Planned |
+
+### What's the Differentiation?
+
+**Honest answer:** Not much. v0.dev is excellent for component generation.
+
+**Potential differentiation:**
+- Integration with Qara's other skills (Research → Design)
+- Custom design system enforcement
+- Non-React frameworks (Svelte, Vue)
+
+### When to Build
+
+**Build when:** You need design generation integrated with other Qara workflows.
+
+**Don't build when:** You just want to generate components (use v0.dev).
+
+### Quality Reality Check
+
+LLM-generated UI code is often:
+- Functional but not polished
+- Missing edge cases (loading, error, empty states)
+- Inconsistent with existing codebase patterns
+
+**This skill won't replace a designer or experienced frontend dev.**
+
+### Framework Complexity
+
+Supporting React, Svelte, AND Vue triples the testing surface. Consider:
+- Pick ONE framework for MVP
+- Add others only if there's demand
+
+---
+
 ## Overview
 
 The **Frontend Design Skill** generates UI/UX designs, component specifications, and frontend code. It bridges the gap between design intent and implementation, producing structured outputs that can be directly used by developers.

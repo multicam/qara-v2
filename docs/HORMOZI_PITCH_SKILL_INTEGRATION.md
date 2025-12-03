@@ -7,6 +7,42 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Niche Use Case
+
+This skill is highly specific:
+- **Target user:** Marketers, founders, salespeople
+- **Use case:** Creating offers and sales copy
+- **Frequency:** Occasional (new products/campaigns)
+
+### Is This Core to Qara?
+
+**No.** This is a specialized content generation skill, not a core capability.
+
+### Simpler Alternative
+
+The Hormozi frameworks are well-documented. A simpler approach:
+```bash
+# Use Claude with context
+claude "Using Alex Hormozi's Value Equation and Grand Slam Offer framework, 
+create a pitch for [product]. Include dream outcome, likelihood, time, effort."
+```
+
+### When to Build
+
+**Build when:** You're creating offers frequently enough that the structured output saves time.
+
+**Don't build when:** You create offers occasionally (just prompt Claude directly).
+
+### Quality Concern
+
+LLM-generated sales copy often sounds generic. The value of Hormozi's frameworks is in the **thinking process**, not just the output format.
+
+**Risk:** Users may trust the structured output without applying critical thinking.
+
+---
+
 ## Overview
 
 The **Hormozi Pitch Skill** generates compelling offers and pitches using Alex Hormozi's frameworks from "$100M Offers" and "$100M Leads". This skill transforms product/service descriptions into high-converting copy.

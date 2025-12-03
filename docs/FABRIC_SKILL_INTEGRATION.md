@@ -7,6 +7,39 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Fabric Already Works
+
+**You can use Fabric directly today:**
+```bash
+fabric --pattern summarize < article.txt
+```
+
+### What Qara Adds
+
+| Feature | Fabric Alone | Fabric + Qara |
+|---------|--------------|---------------|
+| Pattern execution | ✅ | ✅ |
+| Typed outputs | ❌ | ✅ |
+| Multi-LLM | ❌ (config-based) | ✅ (runtime) |
+| Stitching | ❌ | ✅ |
+| Integration with other skills | ❌ | ✅ |
+
+### When to Build This
+
+**Build when:** You need typed outputs from Fabric patterns for downstream processing.
+
+**Don't build when:** You just want to run Fabric patterns (use Fabric directly).
+
+### Dependency Risk
+
+Fabric patterns live in `~/.config/fabric/patterns/`. If Fabric updates patterns, your typed outputs may break.
+
+**Mitigation:** Pin pattern versions or copy patterns into Qara.
+
+---
+
 ## Overview
 
 This document analyzes integrating [Fabric](https://github.com/danielmiessler/fabric) patterns with Qara v2's BAML architecture. Fabric provides well-crafted prompt templates; BAML provides type-safe structured outputs. Combined, they offer the best of both worlds.

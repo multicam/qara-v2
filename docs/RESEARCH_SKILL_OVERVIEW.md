@@ -6,6 +6,41 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Complexity Warning
+
+The 5-phase workflow is ambitious. Consider starting with **depth=1 only**:
+
+| Phase | MVP? | Reason |
+|-------|------|--------|
+| 1. Validate | ✅ Yes | Simple, fast |
+| 2. Decompose | ❌ Skip for MVP | Just use original query |
+| 3. Research | ✅ Yes (single query) | Core value |
+| 4. Fact-check | ❌ Skip for MVP | Add after basic works |
+| 5. Synthesize | ✅ Simplified | Just format findings |
+
+### Unaddressed Failure Modes
+
+- What if validation says "ambiguous" but user wants to proceed?
+- What if parallel queries return conflicting information?
+- What if fact-checking contradicts research findings?
+- Timeout strategy? (Identified as problem in original Qara post-mortem)
+- Partial failures? (3 of 5 queries succeed - what then?)
+
+### Cost Implications
+
+| Depth | Queries | Est. LLM Calls | Est. Cost |
+|-------|---------|----------------|-----------|
+| 1 (Quick) | 2 | 4-5 | $0.05-0.10 |
+| 2 (Standard) | 4-6 | 8-12 | $0.10-0.25 |
+| 3 (Deep) | 8-10 | 15-20 | $0.25-0.50 |
+| 4 (Extensive) | 12-16 | 25-35 | $0.50-1.00 |
+
+**Recommendation:** Add cost tracking from day 1.
+
+---
+
 ## Overview
 
 The Research skill is Qara v2's flagship capability - a parallel multi-agent research system that delivers comprehensive, fact-checked results with tiered output for optimal time-to-insight.

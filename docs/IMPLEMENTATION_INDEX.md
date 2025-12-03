@@ -5,6 +5,49 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+> **Anti-Yes-Man Review Completed:** December 3, 2025
+
+### Key Risks Identified
+
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| **Documentation > Code** | HIGH | 6,500 lines docs, ~30 lines code. Start building before documenting more. |
+| **Scope Creep** | HIGH | 5+ skills planned before core works. Cut to true MVP. |
+| **Cost Controls Missing** | MEDIUM | No LLM cost tracking. Depth=4 research = 16+ API calls. |
+| **Error Handling Undefined** | MEDIUM | No strategy for API failures, timeouts, malformed responses. |
+
+### True MVP (Recommended)
+
+Before Phase 2, prove this works end-to-end:
+```
+MVP Scope (10 hours):
+├── Router + types
+├── Research skill (depth=1 ONLY, no fact-check)
+├── CLI that invokes it
+└── One successful research query
+```
+
+### Questions to Answer Before Proceeding
+
+- [ ] Who is the primary user? (You? Developers? Broader?)
+- [ ] What's the cost budget per query?
+- [ ] How do skills compose? (Research → Pitch?)
+- [ ] What's the error handling strategy?
+- [ ] Is <1ms routing valuable when LLM calls take 1-30s?
+
+### Deferred Until Proven Needed
+
+| Feature | Reason to Defer |
+|---------|-----------------|
+| Qara View Dashboard | Build observability into code first (console.log) |
+| CLI Integrations | One integration first, not four |
+| Coding Workflow Skill | Already exists as Claude commands |
+| Phase 5 Skills | Prove core works first |
+
+---
+
 ## Document Overview
 
 | Document | Lines | Purpose | Phase |

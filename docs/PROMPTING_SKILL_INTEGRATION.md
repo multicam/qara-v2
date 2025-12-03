@@ -7,6 +7,41 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Meta-Skill Consideration
+
+This is a **skill for improving prompts** - a meta-skill. Consider:
+
+1. **Who needs this?** Users who write prompts frequently
+2. **When is it useful?** When crafting prompts for other systems
+3. **Is it core to Qara?** No - it's a utility skill
+
+### Simpler Alternative
+
+Before building a full skill, consider:
+```bash
+# Use Claude directly
+echo "Improve this prompt: [your prompt]" | claude
+```
+
+### When to Build
+
+**Build when:** You're using Qara to generate prompts for other systems regularly.
+
+**Don't build when:** You occasionally want prompt feedback (just ask Claude).
+
+### Iterative Refinement Complexity
+
+The `refineUntilGood` function loops until quality threshold met. Risks:
+- Infinite loops if threshold never reached
+- Cost accumulation (each iteration = LLM call)
+- Diminishing returns after 2-3 iterations
+
+**Recommendation:** Cap at 3 iterations, log cost per refinement.
+
+---
+
 ## Overview
 
 The **Prompting Skill** helps users craft better prompts for LLMs. This is a meta-skill - using AI to improve how users interact with AI. It's particularly valuable because prompt quality directly impacts output quality.

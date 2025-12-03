@@ -6,6 +6,50 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Scope Warning: Four Integrations is Too Many
+
+**Current plan:** Claude CLI, Codex CLI, Gemini CLI, Droid CLI
+
+**Recommendation:** Pick ONE and make it work perfectly.
+
+| Integration | Recommendation | Reason |
+|-------------|----------------|--------|
+| **Claude CLI (MCP)** | ✅ Do first | You use Claude, MCP is standard |
+| Codex CLI | ❌ Defer | Different ecosystem |
+| Gemini CLI | ❌ Defer | Different ecosystem |
+| Droid CLI | ❌ Defer | Custom, lowest priority |
+
+### Missing: Authentication & Security
+
+The HTTP server has no:
+- API key authentication
+- Rate limiting
+- CORS configuration (for browser clients)
+- Request validation
+
+**Risk:** Anyone on localhost can execute skills and burn API credits.
+
+### Missing: Cost Controls
+
+No mechanism to:
+- Track cost per request
+- Set spending limits
+- Alert on high usage
+
+### Simpler Alternative
+
+Before building an HTTP server, consider:
+```bash
+# Direct CLI invocation (no server needed)
+qara "research AI safety" | claude-cli --tool-result
+```
+
+This avoids the server entirely for single-user scenarios.
+
+---
+
 ## Overview
 
 This document details how to integrate Qara v2 as a skill/tool provider for various AI CLI tools:

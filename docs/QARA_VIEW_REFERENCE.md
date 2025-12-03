@@ -6,6 +6,45 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### Premature Optimization Warning
+
+**Current State:** Qara v2 has ~30 lines of code. Building a dashboard for a system that doesn't exist yet is premature.
+
+### Recommended Approach
+
+| Phase | Observability Strategy |
+|-------|------------------------|
+| **MVP** | `console.log` with structured JSON |
+| **After MVP works** | Log to file, grep-able |
+| **After 10+ real uses** | Consider dashboard |
+
+### Why Wait?
+
+1. **You don't know what you need to observe yet**
+2. **Dashboard requirements will change** as you use the system
+3. **6-8 hours** (your estimate) is significant for a nice-to-have
+4. **Svelte/SvelteKit is another dependency** to maintain
+
+### If You Build It Anyway
+
+Minimum viable observability:
+```typescript
+// This is enough for MVP
+function emit(event: string, data: unknown) {
+  console.log(JSON.stringify({ 
+    ts: Date.now(), 
+    event, 
+    data 
+  }));
+}
+```
+
+Then pipe to `jq` for analysis: `bun run cli.ts | jq 'select(.event == "llm.request")'`
+
+---
+
 ## Overview
 
 **Qara View** is a standalone real-time observability dashboard for monitoring Qara v2 agent activity. It visualizes skill execution, research workflows, LLM calls, and system events through an interactive swim lane timeline.

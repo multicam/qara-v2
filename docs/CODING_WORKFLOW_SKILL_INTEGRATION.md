@@ -7,6 +7,54 @@
 
 ---
 
+## ⚠️ Critical Review Notes
+
+### This Already Exists
+
+**The Claude commands this is based on (`research_codebase.md`, `create_plan.md`, etc.) already work TODAY.**
+
+| Existing Command | Works? | Interactive? | Multi-turn? |
+|------------------|--------|--------------|-------------|
+| `/research_codebase` | ✅ Yes | ✅ Yes | ✅ Yes |
+| `/create_plan` | ✅ Yes | ✅ Yes | ✅ Yes |
+| `/implement_plan` | ✅ Yes | ✅ Yes | ✅ Yes |
+| `/validate_plan` | ✅ Yes | ✅ Yes | ✅ Yes |
+| `/create_handoff` | ✅ Yes | ✅ Yes | ✅ Yes |
+
+### What BAML-ifying Loses
+
+The original commands are **interactive and multi-turn**:
+- User can clarify mid-research
+- Plan creation involves back-and-forth
+- Implementation pauses for human verification
+
+BAML functions are **single-shot**:
+- Input → Output
+- No mid-execution clarification
+- No interactive iteration
+
+### When This Makes Sense
+
+| Scenario | Use BAML Version? | Use Claude Commands? |
+|----------|-------------------|----------------------|
+| Automated pipeline | ✅ Yes | ❌ No |
+| CI/CD integration | ✅ Yes | ❌ No |
+| Interactive development | ❌ No | ✅ Yes |
+| Exploratory research | ❌ No | ✅ Yes |
+
+### Recommendation
+
+**Don't build this until you have a specific automation use case.**
+
+The 15-20 hour investment is only worthwhile if you need:
+- Programmatic access to these workflows
+- Integration with other systems
+- Batch processing of plans
+
+For interactive use, the existing Claude commands are better.
+
+---
+
 ## Overview
 
 The **Coding Workflow Skills** implement a complete software development lifecycle within Qara, inspired by battle-tested Claude commands. This is not a single skill but an **orchestrated workflow** of interconnected skills that mirror professional engineering practices.
