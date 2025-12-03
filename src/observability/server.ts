@@ -15,6 +15,8 @@ interface WebSocketClient {
 
 const WEBSOCKET_OPEN = 1;
 const clients = new Set<WebSocketClient>();
+const eventBuffer: QaraEvent[] = [];
+const MAX_BUFFER_SIZE = 100;
 let server: ReturnType<typeof Bun.serve> | null = null;
 let unsubscribe: (() => void) | null = null;
 
@@ -55,6 +57,11 @@ export function startObservabilityServer(port = 3940): ReturnType<typeof Bun.ser
           sessionId: emitter.getSessionId(),
           timestamp: Date.now()
         }));
+        
+        // Replay buffered events to new client
+        for (const event of eventBuffer) {
+          ws.send(JSON.stringify(event));
+        }
       },
       close(ws) {
         clients.delete(ws as unknown as WebSocketClient);
@@ -74,6 +81,12 @@ export function startObservabilityServer(port = 3940): ReturnType<typeof Bun.ser
   });
 
   unsubscribe = emitter.subscribe((event: QaraEvent) => {
+    // Buffer event for replay to late-connecting clients
+    eventBuffer.push(event);
+    if (eventBuffer.length > MAX_BUFFER_SIZE) {
+      eventBuffer.shift();
+    }
+    
     const message = JSON.stringify(event);
     clients.forEach(client => {
       if (client.readyState === WEBSOCKET_OPEN) {
@@ -102,6 +115,7 @@ export function stopObservabilityServer(): void {
   }
   
   clients.clear();
+  eventBuffer.length = 0;
   console.log('[qara-view] Server stopped');
 }
 

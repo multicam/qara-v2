@@ -1,13 +1,13 @@
 /**
  * Qara v2 CLI
- * 
+ *
  * Command-line interface for executing skills via natural language.
  */
 
 import { parseArgs } from 'util';
 import { getRuntime } from '../runtime/qara';
 import type { ExecuteOptions } from '../runtime/qara';
-import { startObservabilityServer, emitter, consoleLogger } from '../observability';
+import { startObservabilityServer, stopObservabilityServer, emitter, consoleLogger } from '../observability';
 
 interface CLIOptions {
   help: boolean;
@@ -46,7 +46,7 @@ Options:
 Examples:
   qara "research AI safety"
   qara "deep research quantum computing" --format=full
-  qara "quick research BAML" --verbose
+  qara "quick research BAML | boundaryml.com" --verbose
   qara list
 `;
 
@@ -99,6 +99,8 @@ async function main(): Promise<void> {
     if (options.verbose) {
       emitter.subscribe(consoleLogger);
     }
+    // Brief delay to allow dashboard to connect
+    await Bun.sleep(100);
   }
 
   // Get input
@@ -139,8 +141,17 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     console.error('Error:', error instanceof Error ? error.message : error);
+    if (options.observability) {
+      stopObservabilityServer();
+    }
     process.exit(1);
   }
+
+  // Clean shutdown
+  if (options.observability) {
+    stopObservabilityServer();
+  }
+  process.exit(0);
 }
 
 function listSkills(): void {

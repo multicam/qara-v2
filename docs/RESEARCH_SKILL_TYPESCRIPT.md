@@ -430,7 +430,7 @@ if (options.stream && route.skill.id.startsWith('research-')) {
 
 ```bash
 # Quick research
-qara "quick research BAML"
+qara "quick research BAML | boundaryml.com"
 
 # Standard research with verbose output
 qara "research AI safety developments" --verbose

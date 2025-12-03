@@ -37,6 +37,49 @@ export class ResearchOrchestrator {
     options.onProgress?.(phase, message);
   }
 
+  private async withLLMEvent<T>(
+    client: string,
+    functionName: string,
+    fn: () => Promise<T>
+  ): Promise<T> {
+    const requestId = `llm-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const startTime = performance.now();
+    
+    emitter.emit({
+      type: 'llm.request',
+      lane: 'llm',
+      data: { requestId, client, function: functionName },
+    });
+    
+    try {
+      const result = await fn();
+      emitter.emit({
+        type: 'llm.response',
+        lane: 'llm',
+        data: {
+          requestId,
+          client,
+          durationMs: performance.now() - startTime,
+          success: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      emitter.emit({
+        type: 'llm.response',
+        lane: 'llm',
+        data: {
+          requestId,
+          client,
+          durationMs: performance.now() - startTime,
+          success: false,
+          error: error instanceof Error ? error.message : String(error),
+        },
+      });
+      throw error;
+    }
+  }
+
   async execute(query: string, options: ResearchOptions): Promise<SynthesisResult> {
     const startTime = performance.now();
     const skillId = `research-${Date.now()}`;
@@ -64,7 +107,9 @@ export class ResearchOrchestrator {
           data: { skillId, phase: 'validate', progress: 0.1, message: 'Validating scope...' },
         });
         
-        validation = await b.ValidateResearchScope({ query });
+        validation = await this.withLLMEvent('Haiku', 'ValidateResearchScope', () =>
+          b.ValidateResearchScope({ query })
+        );
 
         emitter.emit({
           type: 'research.validate',
@@ -92,11 +137,13 @@ export class ResearchOrchestrator {
         data: { skillId, phase: 'decompose', progress: 0.2, message: 'Decomposing query...' },
       });
       
-      const decomposition = await b.DecomposeQuery({
-        query,
-        depth: options.depth,
-        validation,
-      });
+      const decomposition = await this.withLLMEvent('GPT4oMini', 'DecomposeQuery', () =>
+        b.DecomposeQuery({
+          query,
+          depth: options.depth,
+          validation,
+        })
+      );
       
       const queryCount = this.countQueries(decomposition);
       const allQueries = [
@@ -139,7 +186,9 @@ export class ResearchOrchestrator {
         
         const claims = this.extractClaims(researchResults);
         if (claims.length > 0) {
-          factCheck = await b.FactCheckClaims({ claims, context: query });
+          factCheck = await this.withLLMEvent('Claude', 'FactCheckClaims', () =>
+            b.FactCheckClaims({ claims, context: query })
+          );
           
           emitter.emit({
             type: 'research.factcheck',
@@ -163,12 +212,14 @@ export class ResearchOrchestrator {
         data: { skillId, phase: 'synthesize', progress: 0.85, message: 'Synthesizing results...' },
       });
       
-      const synthesis = await b.SynthesizeFindings({
-        original_query: query,
-        research_results: researchResults,
-        fact_check: factCheck ?? null,
-        output_format: options.outputFormat,
-      });
+      const synthesis = await this.withLLMEvent('GPT4o', 'SynthesizeFindings', () =>
+        b.SynthesizeFindings({
+          original_query: query,
+          research_results: researchResults,
+          fact_check: factCheck ?? null,
+          output_format: options.outputFormat,
+        })
+      );
       
       emitter.emit({
         type: 'research.synthesize',
@@ -237,12 +288,14 @@ export class ResearchOrchestrator {
 
       const startTime = performance.now();
       try {
-        const result = await b.ResearchTopic({
-          query: subQuery.query,
-          focus: subQuery.focus,
-          boundary: subQuery.boundary,
-          depth: options.depth,
-        });
+        const result = await this.withLLMEvent('GPT4o', 'ResearchTopic', () =>
+          b.ResearchTopic({
+            query: subQuery.query,
+            focus: subQuery.focus,
+            boundary: subQuery.boundary,
+            depth: options.depth,
+          })
+        );
         
         emitter.emit({
           type: 'research.query.complete',

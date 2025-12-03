@@ -615,7 +615,7 @@ Options:
 Examples:
   qara "research AI safety"
   qara "deep research quantum computing" --format=full
-  qara "quick research BAML" --verbose
+  qara "quick research BAML | boundaryml.com" --verbose
   qara list
 `;
 
